@@ -37,7 +37,7 @@ while(!$connected) {
   catch(PDOException $ex){
     error_log("Could not connect to MySQL");
     error_log($ex->getMessage());
-    error_log("Waiting for MySQL Connection.);
+    error_log("Waiting for MySQL Connection.");
     sleep(5);
   }
 }
