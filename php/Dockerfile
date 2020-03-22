@@ -10,6 +10,8 @@ RUN apk add --no-cache --update-cache \
 RUN apk add --no-cache --update-cache libzip-dev libpng-dev \
   && docker-php-ext-install mysqli                          \
   && docker-php-ext-install pdo_mysql                       \
+  && docker-php-ext-install gd                              \
+  && docker-php-ext-install zip                             \
   && rm -rf /var/cache/apk/*
 
 COPY rootfs /
