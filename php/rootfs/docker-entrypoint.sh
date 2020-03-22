@@ -23,20 +23,20 @@ if [ -z ${TZ-} ]; then
   exit 1
 fi
 
-cat << "EOF" | php --
+cat << EOF | php --
 <?php
-$connected = false;
-while(!$connected) {
+\$connected = false;
+while(!\$connected) {
   try{
-    $dbh = new pdo( 
-      'mysql:host=mysql:3306;dbname=$_SERVER["MYSQL_DATABASE"]', '$_SERVER["MYSQL_USER"]', '$_SERVER["MYSQL_PASSWORD"]',
+    \$dbh = new pdo(
+      'mysql:host=mysql:3306;dbname=$MYSQL_DATABASE', '$MYSQL_USER', '$MYSQL_PASSWORD',
       array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION)
     );
-    $connected = true;
+    \$connected = true;
   }
-  catch(PDOException $ex){
+  catch(PDOException \$ex){
     error_log("Could not connect to MySQL");
-    error_log($ex->getMessage());
+    error_log(\$ex->getMessage());
     error_log("Waiting for MySQL Connection.");
     sleep(5);
   }
