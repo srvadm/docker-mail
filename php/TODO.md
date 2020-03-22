@@ -1,0 +1,1 @@
+- check for empty volume if mounted directory is used
