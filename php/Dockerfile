@@ -7,6 +7,11 @@ RUN apk add --no-cache --update-cache \
   && usermod -u 1000 www-data         \
   && groupmod -g 1000 www-data
 
+RUN apk add --no-cache --update-cache libzip-dev libpng-dev \
+  && docker-php-ext-install mysqli                          \
+  && docker-php-ext-install pdo_mysql                       \
+  && rm -rf /var/cache/apk/*
+
 COPY rootfs /
 RUN mv /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini \
   && rm /usr/local/etc/php/php.ini-development
