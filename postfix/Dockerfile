@@ -7,5 +7,6 @@ RUN apk add --no-cache --update-cache \
   postfix-mysql
 
 COPY rootfs /
+VOLUME ["/etc/postfix"]
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["sleep", "1000000d"]

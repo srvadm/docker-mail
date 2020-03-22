@@ -10,5 +10,6 @@ RUN apk add --no-cache --update-cache \
   dovecot-pigeonhole-plugin
 
 COPY rootfs /
+VOLUME ["/etc/dovecot"]
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["sleep", "1000000d"]
