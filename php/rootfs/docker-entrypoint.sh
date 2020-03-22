@@ -4,11 +4,11 @@ if [ -z ${MYSQL_USER-} ]; then
   echo you need to define a mysql user
   exit 1
 fi
-if [ -z ${MYSQL_PWD-} ]; then
+if [ -z ${MYSQL_PASSWORD-} ]; then
   echo you need to define a mysql user password
   exit 1
 fi
-if [ -z ${MYSQL_DB-} ]; then
+if [ -z ${MYSQL_DATABASE-} ]; then
   echo you need to define a mysql database
   exit 1
 fi
@@ -29,7 +29,7 @@ $connected = false;
 while(!$connected) {
   try{
     $dbh = new pdo( 
-      'mysql:host=mysql:3306;dbname=$_SERVER["MYSQL_DB"]', '$_SERVER["MYSQL_USER"]', '$_SERVER["MYSQL_PWD]',
+      'mysql:host=mysql:3306;dbname=$_SERVER["MYSQL_DATABASE"]', '$_SERVER["MYSQL_USER"]', '$_SERVER["MYSQL_PASSWORD"]',
       array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION)
     );
     $connected = true;
