@@ -7,4 +7,4 @@ RUN apk add --no-cache --update-cache \
 
 COPY rootfs /
 ENTRYPOINT ["/docker-entrypoint.sh"]
-CMD ["sh"]
+CMD ["sleep", "1000000d"]
