@@ -15,7 +15,7 @@ RUN apk add --no-cache --update-cache                 \
   && chown -R 5000:5000 /var/vmail
 
 COPY rootfs /
-VOLUME /var/vmail
+VOLUME ["/var/vmail"]
 EXPOSE 143 993 110 995
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["dovecot", "-F"]
