@@ -9,11 +9,8 @@ RUN apk add --no-cache --update-cache                 \
   dovecot-pop3d                                       \
   dovecot-lmtpd                                       \
   dovecot-pigeonhole-plugin                           \
-  && mkdir -p /var/vmail                              \
   && groupadd -g 5000 vmail                           \
-  && useradd -g vmail -u 5000 vmail -d /var/vmail -m  \
-  && chown -R 5000:5000 /var/vmail
-
+  && useradd -g vmail -u 5000 vmail -d /var/vmail -m
 COPY rootfs /
 VOLUME ["/var/vmail"]
 EXPOSE 143 993 110 995
