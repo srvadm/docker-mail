@@ -97,11 +97,6 @@ iterate_query = SELECT email AS user FROM virtual_users
 EOF
 chown root:root /etc/dovecot/dovecot-sql.conf.ext
 chmod go= /etc/dovecot/conf.d/20-lmtp.conf
-cat << EOF > /etc/dovecot/conf.d/20-lmtp.conf
-protocol lmtp {
-  $mail_plugins sieve
-}
-EOF
 cat << EOF > /etc/dovecot/conf.d/90-quota.conf
 plugin {
   quota = maildir:User quota
