@@ -14,7 +14,7 @@ RUN apk add --no-cache --update-cache                 \
   && mkdir -p /var/vmail                              \
   && groupadd -g 5000 vmail                           \
   && useradd -g vmail -u 5000 vmail -d /var/vmail -m  \
-  && chown -R vmail:vmail /var/vmail
+  && chown -R 5000:5000 /var/vmail
 
 COPY rootfs /
 EXPOSE 143 993 110 995
