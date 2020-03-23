@@ -1,6 +1,8 @@
 FROM alpine:3.11
 LABEL maintainer="Tino Naumann <mail@ti-no.de>"
 
+VOLUME ["/var/vmail"]
+
 RUN apk add --no-cache --update-cache                 \
   tzdata                                              \
   shadow                                              \
@@ -15,8 +17,6 @@ RUN apk add --no-cache --update-cache                 \
   && chown -R vmail:vmail /var/vmail
 
 COPY rootfs /
-USER vmail:vmail
-VOLUME ["/var/vmail"]
 EXPOSE 143 993 110 995
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["dovecot", "-F"]
