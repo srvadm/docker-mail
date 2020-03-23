@@ -8,5 +8,6 @@ RUN apk add --no-cache --update-cache \
 
 COPY rootfs /
 VOLUME ["/etc/postfix"]
+EXPOSE 25 465
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["postfix", "start-fg"]
