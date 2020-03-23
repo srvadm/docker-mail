@@ -92,6 +92,53 @@ password_query = SELECT password FROM virtual_users WHERE email='%u'
 iterate_query = SELECT email AS user FROM virtual_users
 EOF
 chown root:root /etc/dovecot/dovecot-sql.conf.ext
-chmod go= /etc/dovecot/dovecot-sql.conf.ext
+chmod go= /etc/dovecot/conf.d/20-lmtp.conf
+cat << EOF > /etc/dovecot/dovecot-sql.conf.ext
+protocol lmtp {
+  $mail_plugins sieve
+}
+EOF
+cat << EOF > /etc/dovecot/conf.d/90-quota.conf
+plugin {
+  quota = maildir:User quota
+
+  quota_status_success = DUNNO
+  quota_status_nouser = DUNNO
+  quota_status_overquota = "452 4.2.2 Mailbox is full and cannot receive any more emails"
+}
+service quota-status {
+  executable = /usr/lib/dovecot/quota-status -p postfix
+  inet_listener {
+    port = 27
+  }
+}
+plugin {
+   quota_warning = storage=95%% quota-warning 95 %u
+   quota_warning2 = storage=80%% quota-warning 80 %u
+   quota_warning3 = -storage=100%% quota-warning below %u
+}
+service quota-warning {
+   executable = script /usr/local/bin/quota-warning.sh
+   unix_listener quota-warning {
+     group = dovecot
+     mode = 0660
+   }
+ }
+EOF
+cat << EOF > /usr/local/bin/quota-warning.sh
+#!/bin/sh
+PERCENT=\$1
+USER=\$2
+cat << _EOF | /usr/lib/dovecot/dovecot-lda -d \$USER -o "plugin/quota=maildir:User quota:noenforcing"
+From: postmaster@$DOMAIN
+Subject: Quota warning - $PERCENT% reached
+
+Your mailbox can only store a limited amount of emails.
+Currently it is \$PERCENT% full. If you reach 100% then
+new emails cannot be stored. Thanks for your understanding.
+_EOF
+EOF
+chmod +x /usr/local/bin/quota-warning.sh
+
 
 "$@"

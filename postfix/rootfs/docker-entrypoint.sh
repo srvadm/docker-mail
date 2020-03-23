@@ -37,6 +37,11 @@ postconf virtual_alias_maps=mysql:/etc/postfix/mysql-virtual-alias-maps.cf,mysql
 postconf smtpd_sasl_path=inet:$DOVECOT_SERVER:26
 postconf smtpd_sasl_type=dovecot
 postconf virtual_transport=lmtp:inet:$DOVECOT_SERVER:24
+postconf "smtpd_recipient_restrictions = \
+     reject_unauth_destination \
+     check_policy_service inet:$DOVECOT_SERVER:27"
+
+
 
 #cat << EOF >> /etc/postfix/main.cf
 #virtual_mailbox_domains = mysql:/etc/postfix/mysql-virtual-mailbox-domains.cf
