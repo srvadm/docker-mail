@@ -31,6 +31,7 @@ EOF
 chown root:postfix /etc/postfix/mysql-*.cf
 chmod u=rw,g=r,o= /etc/postfix/mysql-*.cf
 
+postconf maillog_file=/dev/stdout
 postconf virtual_mailbox_domains=mysql:/etc/postfix/mysql-virtual-mailbox-domains.cf
 postconf virtual_mailbox_maps=mysql:/etc/postfix/mysql-virtual-mailbox-maps.cf
 postconf virtual_alias_maps=mysql:/etc/postfix/mysql-virtual-alias-maps.cf,mysql:/etc/postfix/mysql-email2email.cf
@@ -52,6 +53,6 @@ postconf "smtpd_recipient_restrictions = \
 #virtual_transport = lmtp:inet:dovecot:24
 #EOF
 
-#mutt -f imaps://dev@m02.srvadm.de@m02.srvadm.de
+#mutt -f imap://dev@m02.srvadm.de@m02.srvadm.de
 
 "$@"

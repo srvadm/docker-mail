@@ -1,5 +1,8 @@
 #!/bin/sh
 
+cat << EOF > /etc/dovecot/conf.d/10-mail.conf
+log_path = /dev/stdout
+EOF
 cat << EOF > /etc/dovecot/conf.d/10-auth.conf
 auth_mechanisms = plain login
 
