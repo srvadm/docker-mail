@@ -15,15 +15,6 @@ auth_mechanisms = plain login
 #!include auth-vpopmail.conf.ext
 #!include auth-static.conf.ext
 EOF
-cat << EOF > /etc/dovecot/conf.d/10-mail.conf
-mail_location = maildir:~/Maildir
-
-namespace inbox {
-  separator = /
-}
-
-mail_plugins = quota
-EOF
 cat << EOF > /etc/dovecot/conf.d/10-master.conf
 service imap-login {
    inet_listener imap {

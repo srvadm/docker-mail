@@ -53,6 +53,6 @@ postconf "smtpd_recipient_restrictions = \
 #virtual_transport = lmtp:inet:dovecot:24
 #EOF
 
-#mutt -f imap://dev@m02.srvadm.de@m02.srvadm.de
+#mutt -f imaps://dev@m02.srvadm.de@m02.srvadm.de
 
 "$@"
