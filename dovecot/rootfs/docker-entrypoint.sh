@@ -107,7 +107,7 @@ plugin {
   quota_status_overquota = "452 4.2.2 Mailbox is full and cannot receive any more emails"
 }
 service quota-status {
-  executable = /usr/lib/dovecot/quota-status -p postfix
+  executable = /usr/libexec/dovecot/quota-status -p postfix
   inet_listener {
     port = 27
   }
