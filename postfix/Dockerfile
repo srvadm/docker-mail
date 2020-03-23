@@ -7,7 +7,6 @@ RUN apk add --no-cache --update-cache \
   postfix-mysql
 
 COPY rootfs /
-VOLUME ["/etc/postfix"]
 EXPOSE 25 465
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["postfix", "start-fg"]

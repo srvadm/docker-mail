@@ -15,6 +15,6 @@ RUN apk add --no-cache --update-cache \
 
 COPY rootfs /
 VOLUME ["/var/vmail"]
-EXPOSE 24 26 27 143 993 110 995
+EXPOSE 143 993 110 995
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["dovecot", "-F"]
