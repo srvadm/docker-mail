@@ -20,23 +20,6 @@ RUN mv                                      \
   && rm                                     \
     /usr/local/etc/php/php.ini-development
 
-RUN mkdir -p                  \
-    /var/www/html/public/     \
-    /var/www/logs/php/        \
-    /var/www/configs/php/     \
-  && chown www-data:www-data  \
-    /var/www/html/public/     \
-    /var/www/logs/php/        \
-    /var/www/configs/php/
-
-RUN curl -sSL https://www.adminer.org/latest-mysql.php                                                \
-    -o /var/www/html/public/db.php                                                                    \
-  && curl -sSL https://raw.githubusercontent.com/vrana/adminer/master/designs/pepa-linha/adminer.css  \
-    -o /var/www/html/public/adminer.css                                                               \
-  && chown www-data:www-data                                                                          \
-    /var/www/html/public/db.php                                                                       \
-    /var/www/html/public/adminer.css
-
 VOLUME ["/var/www"]
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["php-fpm"]
