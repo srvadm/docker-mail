@@ -42,16 +42,9 @@ postconf "smtpd_recipient_restrictions = \
      reject_unauth_destination \
      check_policy_service inet:$DOVECOT_SERVER:27"
 
-newaliases
 
-#cat << EOF >> /etc/postfix/main.cf
-#virtual_mailbox_domains = mysql:/etc/postfix/mysql-virtual-mailbox-domains.cf
-#virtual_mailbox_maps = mysql:/etc/postfix/mysql-virtual-mailbox-maps.cf
-#virtual_alias_maps = mysql:/etc/postfix/mysql-virtual-alias-maps.cf,mysql:/etc/postfix/mysql-email2email.cf
-#smtpd_sasl_path = inet:dovecot:26
-#smtpd_sasl_type = dovecot
-#virtual_transport = lmtp:inet:dovecot:24
-#EOF
+#newaliases # neccessary?
+
 
 #mutt -f imaps://dev@m02.srvadm.de@m02.srvadm.de
 
