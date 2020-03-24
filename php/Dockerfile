@@ -15,21 +15,6 @@ RUN apk add --no-cache --update-cache libzip-dev libpng-dev \
 COPY rootfs /
 RUN mv /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini \
   && rm /usr/local/etc/php/php.ini-development
-RUN mkdir -p                          \
-    /var/www/html/public/             \
-    /var/www/logs/php/                \
-    /var/www/configs/php/             \
-    /var/www/logs/nginx/              \
-    /var/www/configs/nginx/           \
-  && touch                            \
-    /var/www/configs/nginx/host.conf  \
-  && chown www-data:www-data          \
-    /var/www/html/public/             \
-    /var/www/logs/php/                \
-    /var/www/configs/php/             \
-    /var/www/logs/nginx/              \
-    /var/www/configs/nginx/           \
-    /var/www/configs/nginx/host.conf  
 USER www-data:www-data
 RUN curl -sSL https://www.adminer.org/latest-mysql.php                                                \
     -o /var/www/html/public/db.php                                                                    \

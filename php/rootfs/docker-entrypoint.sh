@@ -1,4 +1,17 @@
-#!/bin/sh
+#!/usr/bin/env bash
+
+set -o errexit
+set -o pipefail
+set -o nounset
+
+mkdir -p                    \
+  /var/www/html/public/     \
+  /var/www/logs/php/        \
+  /var/www/configs/php/     \
+&& chown www-data:www-data  \
+  /var/www/html/public/     \
+  /var/www/logs/php/        \
+  /var/www/configs/php/
 
 if [ -z ${MYSQL_USER-} ]; then
   echo you need to define a mysql user
