@@ -12,10 +12,19 @@ mkdir -p                    \
   /var/www/html/public/     \
   /var/www/logs/php/        \
   /var/www/configs/php/
-curl -sSL https://www.adminer.org/latest-mysql.php                                                  \
-  -o /var/www/html/public/db.php                                                                    \
-&& curl -sSL https://raw.githubusercontent.com/vrana/adminer/master/designs/pepa-linha/adminer.css  \
-  -o /var/www/html/public/adminer.css
+
+if ! [ -f /var/www/html/public/db.php ]; then
+  curl -sSL https://www.adminer.org/latest-mysql.php  \
+    -o /var/www/html/public/db.php
+  chown www-data:www-data       \
+    /var/www/html/public/db.php \
+fi
+if ! [ -f /var/www/html/public/adminer.css ]; then
+  curl -sSL https://raw.githubusercontent.com/vrana/adminer/master/designs/pepa-linha/adminer.css  \
+    -o /var/www/html/public/adminer.css
+  chown www-data:www-data             \
+    /var/www/html/public/adminer.css
+fi
 
 if [ -z ${MYSQL_USER-} ]; then
   echo you need to define a mysql user
