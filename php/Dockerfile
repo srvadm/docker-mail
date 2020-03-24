@@ -15,7 +15,6 @@ RUN apk add --no-cache --update-cache libzip-dev libpng-dev \
 COPY rootfs /
 RUN mv /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini \
   && rm /usr/local/etc/php/php.ini-development
-USER www-data:www-data
 
 VOLUME ["/var/www"]
 ENTRYPOINT ["/docker-entrypoint.sh"]
