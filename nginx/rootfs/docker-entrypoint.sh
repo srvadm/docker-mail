@@ -4,13 +4,6 @@ set -o errexit
 set -o pipefail
 set -o nounset
 
-if ! [ -z ${PHP_SERVER-} ]; then
-  while ! ping -c 1 -n $PHP_SERVER &> /dev/null
-  do
-    sleep 2
-  done
-fi
-
 mkdir -p                            \
   /var/www/html/public/             \
   /var/www/logs/nginx/              \
