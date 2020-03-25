@@ -17,4 +17,9 @@ classifier "bayes" {
 }
 EOF
 
+cat << EOF > /etc/rspamd/override.d/worker-proxy.inc
+bind_socket = "*:11332";
+EOF
+
+
 "$@"
