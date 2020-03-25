@@ -187,19 +187,19 @@ EOF
 sievec /etc/dovecot/sieve-after/spam-to-folder.sieve
 sievec /etc/dovecot/sieve/learn-spam.sieve
 sievec /etc/dovecot/sieve/learn-ham.sieve
-chmod u=rw,go=                            \
-  /etc/dovecot/sieve/spam-to-folder.sieve \
-  /etc/dovecot/sieve/spam-to-folder.svbin \
-  /etc/dovecot/sieve/learn-spam.sieve     \
-  /etc/dovecot/sieve/learn-spam.svbin     \
-  /etc/dovecot/sieve/learn-ham.sieve      \
+chmod u=rw,go=                                  \
+  /etc/dovecot/sieve-after/spam-to-folder.sieve \
+  /etc/dovecot/sieve-after/spam-to-folder.svbin \
+  /etc/dovecot/sieve/learn-spam.sieve           \
+  /etc/dovecot/sieve/learn-spam.svbin           \
+  /etc/dovecot/sieve/learn-ham.sieve            \
   /etc/dovecot/sieve/learn-ham.svbin
-chown vmail.vmail                         \
-  /etc/dovecot/sieve/spam-to-folder.sieve \
-  /etc/dovecot/sieve/spam-to-folder.svbin \
-  /etc/dovecot/sieve/learn-spam.sieve     \
-  /etc/dovecot/sieve/learn-spam.svbin     \
-  /etc/dovecot/sieve/learn-ham.sieve      \
+chown vmail.vmail                               \
+  /etc/dovecot/sieve-after/spam-to-folder.sieve \
+  /etc/dovecot/sieve-after/spam-to-folder.svbin \
+  /etc/dovecot/sieve/learn-spam.sieve           \
+  /etc/dovecot/sieve/learn-spam.svbin           \
+  /etc/dovecot/sieve/learn-ham.sieve            \
   /etc/dovecot/sieve/learn-ham.svbin
 
 cat << EOF > /etc/dovecot/sieve/rspamd-learn-spam.sh
