@@ -20,7 +20,7 @@ cat << EOF > /etc/rspamd/local.d/worker-proxy.inc
 upstream "local" {
   self_scan = yes;
 }
-bind_socket = *:11332;
+bind_socket = 0.0.0.0:11332;
 EOF
 
 "$@"
