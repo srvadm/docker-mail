@@ -142,6 +142,11 @@ Currently it is \$PERCENT% full. If you reach 100% then
 new emails cannot be stored. Thanks for your understanding.
 _EOF
 EOF
+cat << EOF > /etc/dovecot/conf.d/90-sieve.conf
+protocol sieve {
+  mail_plugins = \$mail_plugins
+}
+EOF
 chmod +x /usr/local/bin/quota-warning.sh
 mkdir /etc/dovecot/sieve /etc/dovecot/sieve-after
 cat << EOF > /etc/dovecot/conf.d/90-sieve.conf
