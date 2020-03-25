@@ -22,11 +22,5 @@ upstream "local" {
 }
 bind_socket = *:11332;
 EOF
-cat << EOF > /etc/rspamd/local.d/worker-proxy.inc
-upstream "local" {
-  self_scan = yes;
-}
-bind_socket = *:11332;
-EOF
 
 "$@"
