@@ -8,6 +8,6 @@ RUN apk add --no-cache --update-cache \
   && newaliases
 
 COPY rootfs /
-EXPOSE 25 465
+EXPOSE 25 587
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["postfix", "start-fg"]
