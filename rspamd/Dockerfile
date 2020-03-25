@@ -3,7 +3,8 @@ LABEL maintainer="Tino Naumann <mail@ti-no.de>"
 
 RUN apk add --no-cache --update-cache     \
     tzdata                                \
-    rspamd
+    rspamd                                \
+    rspamd-proxy
 
 COPY rootfs /
 
