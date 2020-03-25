@@ -187,8 +187,21 @@ EOF
 sievec /etc/dovecot/sieve-after/spam-to-folder.sieve
 sievec /etc/dovecot/sieve/learn-spam.sieve
 sievec /etc/dovecot/sieve/learn-ham.sieve
-chmod u=rw,go= /etc/dovecot/sieve/{learn-{spam,ham},spam-to-folder}.{sieve,svbin}
-chown vmail.vmail /etc/dovecot/sieve/{learn-{spam,ham},spam-to-folder}.{sieve,svbin}
+chmod u=rw,go=                            \
+  /etc/dovecot/sieve/spam-to-folder.sieve \
+  /etc/dovecot/sieve/spam-to-folder.svbin \
+  /etc/dovecot/sieve/learn-spam.sieve     \
+  /etc/dovecot/sieve/learn-spam.svbin     \
+  /etc/dovecot/sieve/learn-ham.sieve      \
+  /etc/dovecot/sieve/learn-ham.svbin
+chown vmail.vmail                         \
+  /etc/dovecot/sieve/spam-to-folder.sieve \
+  /etc/dovecot/sieve/spam-to-folder.svbin \
+  /etc/dovecot/sieve/learn-spam.sieve     \
+  /etc/dovecot/sieve/learn-spam.svbin     \
+  /etc/dovecot/sieve/learn-ham.sieve      \
+  /etc/dovecot/sieve/learn-ham.svbin
+
 cat << EOF > /etc/dovecot/sieve/rspamd-learn-spam.sh
 #!/bin/sh
 exec /usr/bin/rspamc learn_spam
@@ -197,8 +210,12 @@ cat << EOF > /etc/dovecot/sieve/rspamd-learn-ham.sh
 #!/bin/sh
 exec /usr/bin/rspamc learn_ham
 EOF
-chmod u=rwx,go= /etc/dovecot/sieve/rspamd-learn-{spam,ham}.sh
-chown vmail.vmail /etc/dovecot/sieve/rspamd-learn-{spam,ham}.sh
+chmod u=rwx,go=                           \
+  /etc/dovecot/sieve/rspamd-learn-spam.sh \
+  /etc/dovecot/sieve/rspamd-learn-spam.sh
+chown vmail.vmail                         \
+  /etc/dovecot/sieve/rspamd-learn-ham.sh  \
+  /etc/dovecot/sieve/rspamd-learn-ham.sh
 cat << EOF > /etc/dovecot/conf.d/20-imap.conf
 protocol imap {
   mail_plugins = \$mail_plugins imap_sieve
