@@ -7,9 +7,9 @@ cat << EOF > /etc/rspamd/override.d/classifier-bayes.conf
 autolearn = true;
 users_enabled = true;
 EOF
-cat << EOF > /etc/rspamd/override.d/redis.conf
-servers = "$REDIS_SERVER";
-EOF
+#cat << EOF > /etc/rspamd/override.d/redis.conf
+#servers = "$REDIS_SERVER";
+#EOF
 cat << EOF > /etc/rspamd/override.d/statistic.conf
 classifier "bayes" {
    users_enabled = true;
@@ -17,8 +17,8 @@ classifier "bayes" {
 }
 EOF
 
-cat << EOF > /etc/rspamd/local.d/worker-proxy.inc
-bind_socket = "0.0.0.0:11332";
+cat << EOF > /etc/rspamd/override.d/worker-proxy.inc
+bind_socket = "*:11332";
 milter = yes;
 timeout = 120s;
 upstream "local" {
