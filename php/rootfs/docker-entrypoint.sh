@@ -17,7 +17,7 @@ if ! [ -f /var/www/html/public/db.php ]; then
   curl -sSL https://www.adminer.org/latest-mysql.php  \
     -o /var/www/html/public/db.php
   chown www-data:www-data       \
-    /var/www/html/public/db.php \
+    /var/www/html/public/db.php
 fi
 if ! [ -f /var/www/html/public/adminer.css ]; then
   curl -sSL https://raw.githubusercontent.com/vrana/adminer/master/designs/pepa-linha/adminer.css  \
