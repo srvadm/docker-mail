@@ -251,7 +251,7 @@ namespace inbox {
 }
 EOF
 cat << EOF > /etc/dovecot/conf.d/20-managesieve.conf
-protocols = $protocols sieve
+protocols = \$protocols sieve
 
 service managesieve-login {
  inet_listener sieve {
