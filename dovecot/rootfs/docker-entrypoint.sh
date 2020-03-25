@@ -63,7 +63,7 @@ service auth {
 service imap {
   # Most of the memory goes to mmap()ing files. You may need to increase this
   # limit if you have huge mailboxes.
-  #vsz_limit = $default_vsz_limit
+  #vsz_limit = \$default_vsz_limit
 
   # Max. number of IMAP processes (connections)
   #process_limit = 1024
@@ -135,7 +135,7 @@ PERCENT=\$1
 USER=\$2
 cat << _EOF | /usr/lib/dovecot/dovecot-lda -d \$USER -o "plugin/quota=maildir:User quota:noenforcing"
 From: postmaster@$DOMAIN
-Subject: Quota warning - $PERCENT% reached
+Subject: Quota warning - \$PERCENT% reached
 
 Your mailbox can only store a limited amount of emails.
 Currently it is \$PERCENT% full. If you reach 100% then
@@ -143,6 +143,90 @@ new emails cannot be stored. Thanks for your understanding.
 _EOF
 EOF
 chmod +x /usr/local/bin/quota-warning.sh
+mkdir /etc/dovecot/sieve /etc/dovecot/sieve-after
+cat << EOF > /etc/dovecot/conf.d/90-sieve.conf
+plugin {
+  sieve = file:~/sieve;active=~/.dovecot.sieve
+  sieve_after = /etc/dovecot/sieve-after
 
+  # From elsewhere to Junk folder
+  imapsieve_mailbox1_name = Junk
+  imapsieve_mailbox1_causes = COPY
+  imapsieve_mailbox1_before = file:/etc/dovecot/sieve/learn-spam.sieve
+
+  # From Junk folder to elsewhere
+  imapsieve_mailbox2_name = *
+  imapsieve_mailbox2_from = Junk
+  imapsieve_mailbox2_causes = COPY
+  imapsieve_mailbox2_before = file:/etc/dovecot/sieve/learn-ham.sieve
+
+  sieve_pipe_bin_dir = /etc/dovecot/sieve
+  sieve_global_extensions = +vnd.dovecot.pipe
+  sieve_plugins = sieve_imapsieve sieve_extprograms
+}
+EOF
+cat << EOF > /etc/dovecot/sieve-after/spam-to-folder.sieve
+require ["fileinto","mailbox"];
+
+if header :contains "X-Spam" "Yes" {
+ fileinto :create "Junk";
+ stop;
+}
+EOF
+cat << EOF > /etc/dovecot/sieve/learn-spam.sieve
+require ["vnd.dovecot.pipe", "copy", "imapsieve"];
+pipe :copy "rspamd-learn-spam.sh";
+EOF
+cat << EOF > /etc/dovecot/sieve/learn-ham.sieve
+require ["vnd.dovecot.pipe", "copy", "imapsieve", "variables"];
+if string "${mailbox}" "Trash" {
+  stop;
+}
+pipe :copy "rspamd-learn-ham.sh";
+EOF
+sievec /etc/dovecot/sieve-after/spam-to-folder.sieve
+sievec /etc/dovecot/sieve/learn-spam.sieve
+sievec /etc/dovecot/sieve/learn-ham.sieve
+chmod u=rw,go= /etc/dovecot/sieve/{learn-{spam,ham},spam-to-folder}.{sieve,svbin}
+chown vmail.vmail /etc/dovecot/sieve/{learn-{spam,ham},spam-to-folder}.{sieve,svbin}
+cat << EOF > /etc/dovecot/sieve/rspamd-learn-spam.sh
+#!/bin/sh
+exec /usr/bin/rspamc learn_spam
+EOF
+cat << EOF > /etc/dovecot/sieve/rspamd-learn-ham.sh
+#!/bin/sh
+exec /usr/bin/rspamc learn_ham
+EOF
+chmod u=rwx,go= /etc/dovecot/sieve/rspamd-learn-{spam,ham}.sh
+chown vmail.vmail /etc/dovecot/sieve/rspamd-learn-{spam,ham}.sh
+cat << EOF > /etc/dovecot/conf.d/20-imap.conf
+protocol imap {
+  mail_plugins = \$mail_plugins imap_sieve
+}
+EOF
+
+cat << EOF > /etc/dovecot/conf.d/15-mailboxes.conf
+namespace inbox {
+  mailbox Drafts {
+    special_use = \Drafts
+  }
+  mailbox Junk {
+    special_use = \Junk
+    auto = subscribe
+    autoexpunge = 30d
+  }
+  mailbox Trash {
+    special_use = \Trash
+    auto = subscribe
+    autoexpunge = 30d
+  }
+  mailbox Sent {
+    special_use = \Sent
+  }
+  mailbox "Sent Messages" {
+    special_use = \Sent
+  }
+}
+EOF
 
 "$@"

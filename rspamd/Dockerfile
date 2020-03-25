@@ -8,4 +8,4 @@ RUN apk add --no-cache --update-cache \
 COPY rootfs /
 VOLUME ["/etc/rspamd"]
 ENTRYPOINT ["/docker-entrypoint.sh"]
-CMD ["sleep", "1000000d"]
+CMD ["rspamd", "-f", "-u rspamd", "-g rspamd"]
