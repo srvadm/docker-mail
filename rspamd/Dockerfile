@@ -11,4 +11,4 @@ COPY rootfs /
 
 VOLUME ["/etc/rspamd"]
 ENTRYPOINT ["/docker-entrypoint.sh"]
-CMD ["rspamd", "-f", "-u rspamd", "-g rspamd"]
+CMD ["rspamd", "-f", "-u", "rspamd", "-g", "rspamd"]
