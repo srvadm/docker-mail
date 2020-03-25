@@ -3,12 +3,10 @@ LABEL maintainer="Tino Naumann <mail@ti-no.de>"
 
 RUN apk add --no-cache --update-cache     \
     tzdata                                \
-    rspamd                                \
-  && echo -e 'filename = "/dev/stdout";'  \
-    > /etc/rspamd/local.d/logging.inc
+    rspamd
 
 COPY rootfs /
 
 VOLUME ["/etc/rspamd"]
 ENTRYPOINT ["/docker-entrypoint.sh"]
-CMD ["rspamd", "-f", "-u", "rspamd", "-g", "rspamd"]
+CMD ["rspamd", "-f"]
