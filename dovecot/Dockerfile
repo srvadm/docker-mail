@@ -17,4 +17,4 @@ COPY rootfs /
 VOLUME ["/var/vmail"]
 EXPOSE 143 993 110 995
 ENTRYPOINT ["/docker-entrypoint.sh"]
-CMD ["dovecot", "-F"]
+CMD ["dovecot", "-F", "-c ", "/etc/dovecot/dovecot.conf"]
