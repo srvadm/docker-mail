@@ -48,10 +48,10 @@ postconf smtpd_tls_auth_only=yes
 postconf smtpd_tls_cert_file=/etc/ssl/postfix/certificate.crt
 postconf smtpd_tls_key_file=/etc/ssl/postfix/privatekey.key
 postconf smtp_tls_security_level=may
-postconf "smtpd_relay_restrictions = \
-  permit_mynetworks \
-  permit_sasl_authenticated \
-  defer_unauth_destination"
+#postconf "smtpd_relay_restrictions = \
+#  permit_mynetworks \
+#  permit_sasl_authenticated \
+#  defer_unauth_destination"
 postconf smtpd_milters=inet:$RSPAMD_SERVER:11332
 postconf non_smtpd_milters=inet:$RSPAMD_SERVER:11332
 postconf milter_mail_macros="i {mail_addr} {client_addr} {client_name} {auth_authen}"
@@ -65,5 +65,9 @@ submission inet n       -       n       -       -       smtpd
   -o smtpd_relay_restrictions=permit_sasl_authenticated,reject
   -o milter_macro_daemon_name=ORIGINATING
 EOF
+
+postconf relayhost=$DOVECOT_SERVER
+postconf 'mynetworks = 127.0.0.0/8 172.16.0.0/12 172.17.0.0/16 10.0.0.0/8'
+postconf mynetworks_style=subnet
 
 "$@"
