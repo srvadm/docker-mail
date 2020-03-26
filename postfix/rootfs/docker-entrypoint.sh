@@ -40,18 +40,19 @@ postconf smtpd_sasl_path=inet:$DOVECOT_SERVER:26
 postconf smtpd_sasl_type=dovecot
 postconf smtpd_sasl_auth_enable=yes
 postconf virtual_transport=lmtp:inet:$DOVECOT_SERVER:24
-postconf "smtpd_recipient_restrictions = \
-  reject_unauth_destination \
+postconf mynetworks_style=subnet
+postconf "smtpd_recipient_restrictions =  \
+  permit_mynetworks                       \
+  reject_unauth_destination               \
   check_policy_service inet:$DOVECOT_SERVER:27"
 postconf smtpd_tls_security_level=may
 postconf smtpd_tls_auth_only=yes
 postconf smtpd_tls_cert_file=/etc/ssl/postfix/certificate.crt
 postconf smtpd_tls_key_file=/etc/ssl/postfix/privatekey.key
 postconf smtp_tls_security_level=may
-#postconf "smtpd_relay_restrictions = \
-#  permit_mynetworks \
-#  permit_sasl_authenticated \
-#  defer_unauth_destination"
+postconf "smtpd_relay_restrictions = \
+  permit_sasl_authenticated \
+  defer_unauth_destination"
 postconf smtpd_milters=inet:$RSPAMD_SERVER:11332
 postconf non_smtpd_milters=inet:$RSPAMD_SERVER:11332
 postconf milter_mail_macros="i {mail_addr} {client_addr} {client_name} {auth_authen}"
@@ -66,8 +67,5 @@ submission inet n       -       n       -       -       smtpd
   -o milter_macro_daemon_name=ORIGINATING
 EOF
 
-postconf relayhost=$DOVECOT_SERVER
-postconf 'mynetworks = 127.0.0.0/8 172.16.0.0/12 172.17.0.0/16 10.0.0.0/8'
-postconf mynetworks_style=subnet
 
 "$@"
