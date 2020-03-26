@@ -1,6 +1,7 @@
 #!/bin/sh
 
 postconf myhostname=$DOMAIN
+postconf mydestination=localhost.\$mydomain,localhost
 cat << EOF > /etc/postfix/mysql-virtual-mailbox-domains.cf
 user = $MYSQL_USER
 password = $MYSQL_PASSWORD
