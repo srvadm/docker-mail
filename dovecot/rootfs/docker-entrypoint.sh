@@ -17,7 +17,7 @@ cat << EOF > /usr/local/bin/quota-warning.sh
 #!/bin/sh
 PERCENT=\$1
 USER=\$2
-cat << _EOF | /usr/libexec/dovecot/dovecot-lda -d \$USER -o "plugin/quota=maildir:User quota:noenforcing"
+cat << _EOF | /usr/libexec/dovecot/dovecot-lda -d \$USER -o "log_path=/proc/1/fd/2" -o "info_log_path=/proc/1/fd/1" -o "plugin/quota=maildir:User quota:noenforcing"
 From: postmaster@$DOMAIN
 Subject: Quota warning - \$PERCENT% reached
 
