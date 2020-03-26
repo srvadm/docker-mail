@@ -12,6 +12,8 @@ RUN apk add --no-cache --update-cache                 \
   && groupadd -g 5000 vmail                           \
   && useradd -g vmail -u 5000 vmail -d /var/vmail -m
 
+COPY rootfs /
+
 RUN sievec                                        \
     /etc/dovecot/sieve-after/spam-to-folder.sieve \
   && sievec                                       \
@@ -27,8 +29,6 @@ RUN sievec                                        \
   && chmod u=rwx,go=                              \
     /etc/dovecot/sieve/rspamd-learn-spam.sh       \
     /etc/dovecot/sieve/rspamd-learn-spam.sh
-
-COPY rootfs /
 
 VOLUME ["/var/vmail"]
 EXPOSE 143 993 110 995
