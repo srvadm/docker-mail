@@ -1,5 +1,6 @@
 #!/bin/sh
 
+postconf myhostname=$DOMAIN
 cat << EOF > /etc/postfix/mysql-virtual-mailbox-domains.cf
 user = $MYSQL_USER
 password = $MYSQL_PASSWORD
@@ -30,7 +31,6 @@ query = SELECT email FROM virtual_users WHERE email='%s'
 EOF
 chown root:postfix /etc/postfix/mysql-*.cf
 chmod u=rw,g=r,o= /etc/postfix/mysql-*.cf
-
 postconf maillog_file=/dev/stdout
 postconf virtual_mailbox_domains=mysql:/etc/postfix/mysql-virtual-mailbox-domains.cf
 postconf virtual_mailbox_maps=mysql:/etc/postfix/mysql-virtual-mailbox-maps.cf
@@ -56,16 +56,5 @@ postconf "smtpd_relay_restrictions = \
 postconf smtpd_milters=inet:$RSPAMD_SERVER:11332
 postconf non_smtpd_milters=inet:$RSPAMD_SERVER:11332
 postconf milter_mail_macros="i {mail_addr} {client_addr} {client_name} {auth_authen}"
-cat << EOF >> /etc/postfix/master.cf
-submission inet n       -       n       -       -       smtpd
-  -o syslog_name=postfix/submission
-  -o smtpd_tls_security_level=encrypt
-  -o smtpd_sasl_auth_enable=yes
-  -o smtpd_tls_auth_only=yes
-  -o smtpd_reject_unlisted_recipient=no
-  -o smtpd_relay_restrictions=permit_sasl_authenticated,reject
-  -o milter_macro_daemon_name=ORIGINATING
-EOF
-
 
 "$@"

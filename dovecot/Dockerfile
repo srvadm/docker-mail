@@ -9,9 +9,24 @@ RUN apk add --no-cache --update-cache                 \
     dovecot-pop3d                                     \
     dovecot-lmtpd                                     \
     dovecot-pigeonhole-plugin                         \
-    dovecot-submissiond                               \
   && groupadd -g 5000 vmail                           \
   && useradd -g vmail -u 5000 vmail -d /var/vmail -m
+
+RUN sievec                                        \
+    /etc/dovecot/sieve-after/spam-to-folder.sieve \
+  && sievec                                       \
+    /etc/dovecot/sieve/learn-spam.sieve           \
+  && sievec                                       \
+    /etc/dovecot/sieve/learn-ham.sieve            \
+  && chmod u=rw,go=                               \
+    /etc/dovecot/sieve-after/*                    \
+    /etc/dovecot/sieve/*                          \
+  && chown vmail.vmail                            \
+    /etc/dovecot/sieve-after/*                    \
+    /etc/dovecot/sieve/*                          \
+  && chmod u=rwx,go=                              \
+    /etc/dovecot/sieve/rspamd-learn-spam.sh       \
+    /etc/dovecot/sieve/rspamd-learn-spam.sh
 
 COPY rootfs /
 
