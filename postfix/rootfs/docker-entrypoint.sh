@@ -56,14 +56,14 @@ postconf smtpd_milters=inet:$RSPAMD_SERVER:11332
 postconf non_smtpd_milters=inet:$RSPAMD_SERVER:11332
 postconf milter_mail_macros="i {mail_addr} {client_addr} {client_name} {auth_authen}"
 cat << EOF >> /etc/postfix/master.cf
-submission inet n       -       y       -       -       smtpd
- -o syslog_name=postfix/submission
- -o smtpd_tls_security_level=encrypt
- -o smtpd_sasl_auth_enable=yes
- -o smtpd_tls_auth_only=yes
- -o smtpd_reject_unlisted_recipient=no
- -o smtpd_relay_restrictions=permit_sasl_authenticated,reject
- -o milter_macro_daemon_name=ORIGINATING
+submission inet n       -       n       -       -       smtpd
+  -o syslog_name=postfix/submission
+  -o smtpd_tls_security_level=encrypt
+  -o smtpd_sasl_auth_enable=yes
+  -o smtpd_tls_auth_only=yes
+  -o smtpd_reject_unlisted_recipient=no
+  -o smtpd_relay_restrictions=permit_sasl_authenticated,reject
+  -o milter_macro_daemon_name=ORIGINATING
 EOF
 
 "$@"
