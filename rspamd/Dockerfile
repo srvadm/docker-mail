@@ -1,10 +1,11 @@
 FROM alpine:3.11
 LABEL maintainer="Tino Naumann <mail@ti-no.de>"
 
-RUN apk add --no-cache --update-cache     \
-    tzdata                                \
-    rspamd                                \
-    rspamd-proxy
+RUN apk add --no-cache --update-cache \
+    tzdata                            \
+    rspamd                            \
+    rspamd-proxy                      \
+  && mkdir /var/lib/rspamd/dkim
 
 COPY rootfs /
 
