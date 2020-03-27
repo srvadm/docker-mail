@@ -1,7 +1,14 @@
 #!/bin/sh
 
+if [ -z ${DOMAIN-} ]; then
+  echo you need to define a domain
+  exit 1
+fi
+if [ -z ${MYSQL_SERVER-} ]; then
+  MYSQL_SERVER=mysql
+fi
+
 postconf myhostname=$DOMAIN
-postconf mydestination=localhost.\$mydomain,localhost
 cat << EOF > /etc/postfix/mysql-virtual-mailbox-domains.cf
 user = $MYSQL_USER
 password = $MYSQL_PASSWORD
@@ -32,30 +39,5 @@ query = SELECT email FROM virtual_users WHERE email='%s'
 EOF
 chown root:postfix /etc/postfix/mysql-*.cf
 chmod u=rw,g=r,o= /etc/postfix/mysql-*.cf
-postconf maillog_file=/dev/stdout
-postconf virtual_mailbox_domains=mysql:/etc/postfix/mysql-virtual-mailbox-domains.cf
-postconf virtual_mailbox_maps=mysql:/etc/postfix/mysql-virtual-mailbox-maps.cf
-postconf virtual_alias_maps=mysql:/etc/postfix/mysql-virtual-alias-maps.cf,mysql:/etc/postfix/mysql-email2email.cf
-postconf smtpd_sender_login_maps=mysql:/etc/postfix/mysql-email2email.cf
-postconf smtpd_sasl_path=inet:$DOVECOT_SERVER:26
-postconf smtpd_sasl_type=dovecot
-postconf smtpd_sasl_auth_enable=yes
-postconf virtual_transport=lmtp:inet:$DOVECOT_SERVER:24
-postconf mynetworks_style=subnet
-postconf "smtpd_recipient_restrictions =  \
-  permit_mynetworks                       \
-  reject_unauth_destination               \
-  check_policy_service inet:$DOVECOT_SERVER:27"
-postconf smtpd_tls_security_level=may
-postconf smtpd_tls_auth_only=yes
-postconf smtpd_tls_cert_file=/etc/ssl/postfix/certificate.crt
-postconf smtpd_tls_key_file=/etc/ssl/postfix/privatekey.key
-postconf smtp_tls_security_level=may
-postconf "smtpd_relay_restrictions = \
-  permit_sasl_authenticated \
-  defer_unauth_destination"
-postconf smtpd_milters=inet:$RSPAMD_SERVER:11332
-postconf non_smtpd_milters=inet:$RSPAMD_SERVER:11332
-postconf milter_mail_macros="i {mail_addr} {client_addr} {client_name} {auth_authen}"
 
 "$@"

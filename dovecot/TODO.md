@@ -1,1 +1,2 @@
 - Post-hook after cert renewal
+- prepere mysql database

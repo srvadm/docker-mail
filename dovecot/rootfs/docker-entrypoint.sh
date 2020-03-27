@@ -1,5 +1,13 @@
 #!/bin/sh
 
+if [ -z ${DOMAIN-} ]; then
+  echo you need to define a domain
+  exit 1
+fi
+if [ -z ${MYSQL_SERVER-} ]; then
+  MYSQL_SERVER=mysql
+fi
+
 cat << EOF > /etc/dovecot/dovecot-sql.conf.ext
 driver = mysql
 connect = host=$MYSQL_SERVER dbname=$MYSQL_DATABASE user=$MYSQL_USER password=$MYSQL_PASSWORD
