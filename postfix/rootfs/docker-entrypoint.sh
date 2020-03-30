@@ -7,6 +7,12 @@ fi
 if [ -z ${MYSQL_SERVER-} ]; then
   MYSQL_SERVER=mysql
 fi
+if ! [ -f /etc/ssl/postfix/certificate.crt ]; then
+  exit 1
+fi
+if ! [ -f /etc/ssl/postfix/privatekey.key ]; then
+  exit 1
+fi
 
 postconf myhostname=$DOMAIN
 cat << EOF > /etc/postfix/mysql-virtual-mailbox-domains.cf
