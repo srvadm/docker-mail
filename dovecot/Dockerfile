@@ -34,4 +34,4 @@ VOLUME ["/var/vmail"]
 EXPOSE 143 993 110 995
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["dovecot", "-F", "-c", "/etc/dovecot/dovecot.conf"]
-HEALTHCHECK --start-period=350s CMD echo QUIT | nc localhost 110 | grep "+OK Dovecot ready."
+HEALTHCHECK --start-period=350s CMD echo QUIT | nc localhost 110 | grep "+OK Dovecot ready." && [ -f /etc/ssl/dovecot/certificate.crt ] && [ -f /etc/ssl/dovecot/privatekey.key ]
