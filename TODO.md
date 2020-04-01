@@ -1,0 +1,1 @@
+- catch caert-error for mail-domains and exclude them
