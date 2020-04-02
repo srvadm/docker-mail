@@ -7,9 +7,17 @@ RUN apk add --no-cache --update-cache \
   shadow                              \
   && usermod -u 1000 www-data         \
   && groupmod -g 1000 www-data
-RUN apk add --no-cache --update-cache libzip-dev libpng-dev \
-  && docker-php-ext-install mysqli                          \
-  && docker-php-ext-install pdo_mysql                       \
+
+RUN apk add --no-cache --update-cache \
+    libzip-dev                        \
+    libpng-dev                        \
+    icu-dev                           \
+  && docker-php-ext-install mysqli    \
+  && docker-php-ext-install pdo_mysql \
+  && docker-php-ext-install intl      \
+  && docker-php-ext-install exif      \
+  && docker-php-ext-install gd        \
+  && docker-php-ext-install zip       \
   && rm -rf /var/cache/apk/*
 
 COPY rootfs /
@@ -18,7 +26,19 @@ RUN mv                                      \
     /usr/local/etc/php/php.ini-production   \
     /usr/local/etc/php/php.ini              \
   && rm                                     \
-    /usr/local/etc/php/php.ini-development
+    /usr/local/etc/php/php.ini-development  \
+  && curl                                   \
+    https://github.com/roundcube/roundcubemail/releases/download/1.4.3/roundcubemail-1.4.3-complete.tar.gz  \
+    -o roundcube.tar.gz                     \
+  && tar -xzf                               \
+    roundcube.tar.gz                        \
+  && mv                                     \
+    roundcubemail-*/*                       \
+    /var/www/html/public/                   \
+  && rm -r                                  \
+    roundcube*                              \
+  && chown -R www-data:www-data             \
+    /var/www/html
 
 VOLUME ["/var/www"]
 ENTRYPOINT ["/docker-entrypoint.sh"]
