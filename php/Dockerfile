@@ -44,6 +44,7 @@ RUN mv                                        \
   && php                                      \
     /var/www/html/public/composer install     \
     --no-dev                                  \
+    -d /var/www/html/public                   \
   && curl -sL                                 \
     https://www.adminer.org/latest-mysql.php  \
     -o /var/www/html/public/db.php            \
