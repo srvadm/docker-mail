@@ -29,7 +29,7 @@ RUN mv                                      \
     /usr/local/etc/php/php.ini-development
 RUN curl -s -L \
   https://api.github.com/repos/roundcube/roundcubemail/tarball \
-  | tar xzvf - --one-top-level="roundcube" --strip-components \
+  | tar xzvf - --one-top-level="roundcube" --strip-components 1 \
   && mv                                     \
     roundcube/*                       \
     /var/www/html/public/                   \
