@@ -26,17 +26,15 @@ RUN mv                                      \
     /usr/local/etc/php/php.ini-production   \
     /usr/local/etc/php/php.ini              \
   && rm                                     \
-    /usr/local/etc/php/php.ini-development  \
-  && curl -s                                \
-    https://github.com/roundcube/roundcubemail/releases/download/1.4.3/roundcubemail-1.4.3-complete.tar.gz  \
-    -o roundcube.tar.gz                     \
-  && tar -xzf                               \
-    roundcube.tar.gz                        \
+    /usr/local/etc/php/php.ini-development
+RUN curl -s -L \
+  https://api.github.com/repos/roundcube/roundcubemail/tarball \
+  | tar xzvf - --one-top-level="roundcube" --strip-components \
   && mv                                     \
-    roundcubemail-*/*                       \
+    roundcube/*                       \
     /var/www/html/public/                   \
   && rm -r                                  \
-    roundcube*                              \
+    roundcube                               \
   && chown -R www-data:www-data             \
     /var/www/html
 
