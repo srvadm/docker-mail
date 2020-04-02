@@ -26,16 +26,14 @@ RUN mv                                      \
     /usr/local/etc/php/php.ini-production   \
     /usr/local/etc/php/php.ini              \
   && rm                                     \
-    /usr/local/etc/php/php.ini-development
-RUN curl -s -L \
-  https://api.github.com/repos/roundcube/roundcubemail/tarball \
-  | tar xzvf - --one-top-level="roundcube" --strip-components 1 \
-  && mv                                     \
-    roundcube/*                       \
-    /var/www/html/public/                   \
-  && rm -r                                  \
-    roundcube                               \
-  && chown -R www-data:www-data             \
+    /usr/local/etc/php/php.ini-development  \
+  && curl -s -L                                                   \
+    https://api.github.com/repos/roundcube/roundcubemail/tarball  \
+    | tar xzf -                                                   \
+    -C /var/www/html                                              \
+    --one-top-level="public"                                      \
+    --strip-components 1                                          \
+  && chown -R www-data:www-data                                   \
     /var/www/html
 
 VOLUME ["/var/www"]
