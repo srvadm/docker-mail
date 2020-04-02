@@ -42,5 +42,6 @@ RUN mv                                        \
   && chown -R www-data:www-data               \
     /var/www/html
 
+VOLUME ["/var/www"]
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["php-fpm"]
