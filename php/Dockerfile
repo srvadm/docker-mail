@@ -45,6 +45,12 @@ RUN mv                                        \
     /var/www/html/public/composer install     \
     --no-dev                                  \
     -d /var/www/html/public                   \
+  && curl -sL                                 \
+    https://www.adminer.org/latest-mysql.php  \
+    -o /var/www/html/public/db.php            \
+  && curl -sL                                 \
+    https://raw.githubusercontent.com/vrana/adminer/master/designs/pepa-linha/adminer.css \
+    -o /var/www/html/public/adminer.css       \
   && chown -R www-data:www-data               \
     /var/www/html
 
