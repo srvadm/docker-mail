@@ -27,7 +27,7 @@ RUN mv                                      \
     /usr/local/etc/php/php.ini              \
   && rm                                     \
     /usr/local/etc/php/php.ini-development  \
-  && curl                                   \
+  && curl -s                                \
     https://github.com/roundcube/roundcubemail/releases/download/1.4.3/roundcubemail-1.4.3-complete.tar.gz  \
     -o roundcube.tar.gz                     \
   && tar -xzf                               \
