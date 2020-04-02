@@ -22,20 +22,25 @@ RUN apk add --no-cache --update-cache \
 
 COPY rootfs /
 
-RUN mv                                      \
-    /usr/local/etc/php/php.ini-production   \
-    /usr/local/etc/php/php.ini              \
-  && rm                                     \
-    /usr/local/etc/php/php.ini-development  \
-  && curl -s -L                                                   \
-    https://api.github.com/repos/roundcube/roundcubemail/tarball  \
-    | tar xzf -                                                   \
-    -C /var/www/html                                              \
-    --one-top-level="public"                                      \
-    --strip-components 1                                          \
-  && chown -R www-data:www-data                                   \
+RUN mv                                        \
+    /usr/local/etc/php/php.ini-production     \
+    /usr/local/etc/php/php.ini                \
+  && rm                                       \
+    /usr/local/etc/php/php.ini-development    \
+  && curl -sL v                               \
+    https://api.github.com/repos/roundcube/roundcubemail/tarball \
+    | tar xzf -                               \
+    -C /var/www/html                          \
+    --one-top-level="public"                  \
+    --strip-components 1                      \
+  && curl -sL                                 \
+    https://www.adminer.org/latest-mysql.php  \
+    -o /var/www/html/public/db.php            \
+  && curl -sL                                 \
+    https://raw.githubusercontent.com/vrana/adminer/master/designs/pepa-linha/adminer.css \
+    -o /var/www/html/public/adminer.css       \
+  && chown -R www-data:www-data               \
     /var/www/html
 
-VOLUME ["/var/www"]
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["php-fpm"]
