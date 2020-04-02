@@ -34,6 +34,17 @@ RUN mv                                        \
     --one-top-level="public"                  \
     --strip-components 1                      \
   && curl -sL                                 \
+    https://getcomposer.org/installer         \
+    | php --                                  \
+    --install-dir=/var/www/html/public        \
+    --filename=composer                       \
+  && mv                                       \
+    /var/www/html/public/composer.json-dist   \
+    /var/www/html/public/composer.json        \
+  && php                                      \
+    /var/www/html/public/composer install     \
+    --no-dev                                  \
+  && curl -sL                                 \
     https://www.adminer.org/latest-mysql.php  \
     -o /var/www/html/public/db.php            \
   && curl -sL                                 \
