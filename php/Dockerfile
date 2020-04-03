@@ -33,6 +33,7 @@ RUN mv                                        \
     -C /var/www/html                          \
     --one-top-level="public"                  \
     --strip-components 1                      \
+  && touch /var/www/html/public/t1            \
   && curl -sL                                 \
     https://getcomposer.org/installer         \
     | php --                                  \
@@ -45,17 +46,17 @@ RUN mv                                        \
     /var/www/html/public/composer install     \
     --no-dev                                  \
     -d /var/www/html/public                   \
-  && ls -la /var/www/html/public/             \
+  && touch /var/www/html/public/t2            \
   && curl -sL                                 \
     https://www.adminer.org/latest-mysql.php  \
     -o /var/www/html/public/db.php            \
   && curl -sL                                 \
     https://raw.githubusercontent.com/vrana/adminer/master/designs/pepa-linha/adminer.css \
     -o /var/www/html/public/adminer.css       \
+  && touch /var/www/html/public/t3            \
   && chown -R www-data:www-data               \
     /var/www/html
 
 VOLUME ["/var/www/"]
-RUN ls -la /var/www/html/public/
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["php-fpm"]
