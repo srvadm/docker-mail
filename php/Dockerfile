@@ -33,6 +33,7 @@ RUN mv                                        \
     -C /var/www/html                          \
     --one-top-level="public"                  \
     --strip-components 1                      \
+  && ls -la /var/www/html/public/             \
   && curl -sL                                 \
     https://getcomposer.org/installer         \
     | php --                                  \
@@ -45,6 +46,7 @@ RUN mv                                        \
     /var/www/html/public/composer install     \
     --no-dev                                  \
     -d /var/www/html/public                   \
+  && ls -la /var/www/html/public/             \
   && curl -sL                                 \
     https://www.adminer.org/latest-mysql.php  \
     -o /var/www/html/public/db.php            \
