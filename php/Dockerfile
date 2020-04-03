@@ -33,7 +33,6 @@ RUN mv                                        \
     -C /var/www/html                          \
     --one-top-level="public"                  \
     --strip-components 1                      \
-  && ls -la /var/www/html/public/             \
   && curl -sL                                 \
     https://getcomposer.org/installer         \
     | php --                                  \
@@ -56,6 +55,7 @@ RUN mv                                        \
   && chown -R www-data:www-data               \
     /var/www/html
 
-VOLUME ["/var/www"]
+VOLUME ["/var/www/"]
+RUN ls -la /var/www/html/public/
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["php-fpm"]
