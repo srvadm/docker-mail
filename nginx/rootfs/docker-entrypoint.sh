@@ -4,6 +4,15 @@ set -o errexit
 set -o pipefail
 set -o nounset
 
+if [ -z ${DOMAIN-} ]; then
+  echo you need to define a domain
+  exit 1
+fi
+
+if ! [ $(nc -z nginx 80; echo $?) -eq 0 ]; then
+  exit 1
+fi
+
 mkdir -p                            \
   /var/www/html/public/             \
   /var/www/logs/nginx/              \
@@ -16,10 +25,5 @@ mkdir -p                            \
   /var/www/logs/nginx/              \
   /var/www/configs/nginx/           \
   /var/www/configs/nginx/host.conf
-
-if [ -z ${DOMAIN-} ]; then
-  echo you need to define a domain
-  exit 1
-fi
 
 "$@"

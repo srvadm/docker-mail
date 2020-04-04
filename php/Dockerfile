@@ -27,6 +27,10 @@ RUN mv                                        \
     /usr/local/etc/php/php.ini                \
   && rm                                       \
     /usr/local/etc/php/php.ini-development    \
+  && mkdir -p                                 \
+    /var/www/html/public/                     \
+    /var/www/logs/php/                        \
+    /var/www/configs/php/                     \
   && curl -sL v                               \
     https://api.github.com/repos/roundcube/roundcubemail/tarball \
     | tar xzf -                               \
@@ -51,8 +55,10 @@ RUN mv                                        \
   && curl -sL                                 \
     https://raw.githubusercontent.com/vrana/adminer/master/designs/pepa-linha/adminer.css \
     -o /var/www/html/public/adminer.css       \
-  && chown -R www-data:www-data               \
-    /var/www/html
+  && chown www-data:www-data                  \
+    /var/www/html/public/                     \
+    /var/www/logs/php/                        \
+    /var/www/configs/php/
 
 VOLUME ["/var/www"]
 ENTRYPOINT ["/docker-entrypoint.sh"]
