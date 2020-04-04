@@ -9,9 +9,11 @@ if [ -z ${DOMAIN-} ]; then
   exit 1
 fi
 
-if ! [ $(nc -z nginx 80; echo $?) -eq 0 ]; then
-  exit 1
-fi
+while ! [ $(nc -z php 9000; echo $?) -eq 0 ]
+do
+  echo "Waiting for PHP Connection."
+  sleep 5
+done
 
 mkdir -p                            \
   /var/www/html/public/             \
