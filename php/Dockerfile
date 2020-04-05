@@ -39,7 +39,7 @@ RUN mv                                        \
     | tar xzf -                               \
     -C /var/www/html/public                   \
     --strip-components 1                      \
-  && rm -rootfs                               \
+  && rm -r                                    \
     CHANGELOG                                 \
     INSTALL                                   \
     LICENSE                                   \
