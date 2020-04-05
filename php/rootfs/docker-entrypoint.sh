@@ -52,7 +52,7 @@ if ! [ -f '/var/www/html/public/config/config.inc.php' ]; then
 <?php
 \$config = array();
 \$config['db_dsnw'] = 'mysql://${MYSQL_USER}:${MYSQL_PASSWORD}@mysql/${MYSQL_DATABASE}';
-\$config['db_prefix'] = '$(pwgen -s -A -0 -1 2)_';
+\$config['db_prefix'] = 'rc_';
 \$ssl_no_check = array(
  'ssl' => array(
      'verify_peer' => false,
@@ -65,9 +65,23 @@ if ! [ -f '/var/www/html/public/config/config.inc.php' ]; then
 \$config['default_host'] = 'tls://dovecot';
 \$config['smtp_server'] = 'tls://postfix';
 \$config['des_key'] = '$(pwgen -s -c -n -1 24)';
-\$config['plugins'] = array();
+\$config['plugins'] = array(
+  'password',
+  'managesieve'
+);
 EOF
 chown www-data: /var/www/html/public/config/config.inc.php
+fi
+if ! [ -f '/var/www/html/public/plugins/password/config.inc.php' ]; then
+  cat << EOF > /var/www/html/public/plugins/password/config.inc.php
+<?php
+\$rcmail_config['password_force_save'] = true;
+\$rcmail_config['password_query'] = "UPDATE virtual_users SET password = %D WHERE email = %u";
+\$rcmail_config['password_dovecotpw'] = '/usr/bin/doveadm pw';
+\$rcmail_config['password_dovecotpw_method'] = 'BLF-CRYPT';
+\$rcmail_config['password_dovecotpw_with_method'] = true;
+EOF
+chown www-data: /var/www/html/public/plugins/password/config.inc.php
 fi
 
 "$@"
