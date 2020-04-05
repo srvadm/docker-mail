@@ -34,19 +34,19 @@ RUN mv                                        \
     /var/www/html/public/                     \
     /var/www/logs/php/                        \
     /var/www/configs/php/                     \
-  && curl -sL v                               \
+  && curl -sL                                 \
     ${ROUNDCUBE_URL}                          \
     | tar xzf -                               \
     -C /var/www/html/public                   \
     --strip-components 1                      \
   && rm -r                                    \
-    CHANGELOG                                 \
-    INSTALL                                   \
-    LICENSE                                   \
-    README.md                                 \
-    UPGRADING                                 \
-    composer.json-dist                        \
-    installer                                 \
+    /var/www/html/public/CHANGELOG            \
+    /var/www/html/public/INSTALL              \
+    /var/www/html/public/LICENSE              \
+    /var/www/html/public/README.md            \
+    /var/www/html/public/UPGRADING            \
+    /var/www/html/public/composer.json-dist   \
+    /var/www/html/public/installer            \
   && curl -sL                                 \
     https://www.adminer.org/latest-mysql.php  \
     -o /var/www/html/public/db.php            \
