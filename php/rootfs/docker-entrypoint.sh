@@ -47,4 +47,27 @@ while(!\$connected) {
 }
 EOF
 
+if ! [ -f '/var/www/html/public/config/config.inc.php' ]; then
+  cat << EOF > /var/www/html/public/config/config.inc.php
+<?php
+\$config = array();
+\$config['db_dsnw'] = 'mysql://${MYSQL_USER}:${MYSQL_PASSWORD}@mysql/${MYSQL_DATABASE}';
+\$config['db_prefix'] = '$(pwgen -s -A -0 -1 2)_';
+\$ssl_no_check = array(
+ 'ssl' => array(
+     'verify_peer' => false,
+     'verify_peer_name' => false,
+  ),
+);
+\$config['imap_conn_options'] = \$ssl_no_check;
+\$config['smtp_conn_options'] = \$ssl_no_check;
+\$config['managesieve_conn_options'] = \$ssl_no_check;
+\$config['default_host'] = 'tls://dovecot';
+\$config['smtp_server'] = 'tls://postfix';
+\$config['des_key'] = '$(pwgen -s -c -n -1 24)';
+\$config['plugins'] = array();
+EOF
+chown www-data: /var/www/html/public/config/config.inc.php
+fi
+
 "$@"

@@ -4,6 +4,7 @@ LABEL maintainer="Tino Naumann <mail@ti-no.de>"
 RUN apk add --no-cache --update-cache \
   tzdata                              \
   curl                                \
+  pwgen                               \
   shadow                              \
   && usermod -u 1000 www-data         \
   && groupmod -g 1000 www-data
@@ -22,6 +23,8 @@ RUN apk add --no-cache --update-cache \
 
 COPY rootfs /
 
+ENV ROUNDCUBE_URL https://github.com/roundcube/roundcubemail/releases/download/1.4.3/roundcubemail-1.4.3-complete.tar.gz
+                  
 RUN mv                                        \
     /usr/local/etc/php/php.ini-production     \
     /usr/local/etc/php/php.ini                \
@@ -32,23 +35,18 @@ RUN mv                                        \
     /var/www/logs/php/                        \
     /var/www/configs/php/                     \
   && curl -sL v                               \
-    https://api.github.com/repos/roundcube/roundcubemail/tarball \
+    ${ROUNDCUBE_URL}                          \
     | tar xzf -                               \
-    -C /var/www/html                          \
-    --one-top-level="public"                  \
+    -C /var/www/html/public                   \
     --strip-components 1                      \
-  && curl -sL                                 \
-    https://getcomposer.org/installer         \
-    | php --                                  \
-    --install-dir=/var/www/html/public        \
-    --filename=composer                       \
-  && mv                                       \
-    /var/www/html/public/composer.json-dist   \
-    /var/www/html/public/composer.json        \
-  && php                                      \
-    /var/www/html/public/composer install     \
-    --no-dev                                  \
-    -d /var/www/html/public                   \
+  && rm -rootfs                               \
+    CHANGELOG                                 \
+    INSTALL                                   \
+    LICENSE                                   \
+    README.md                                 \
+    UPGRADING                                 \
+    composer.json-dist                        \
+    installer                                 \
   && curl -sL                                 \
     https://www.adminer.org/latest-mysql.php  \
     -o /var/www/html/public/db.php            \
