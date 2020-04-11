@@ -53,7 +53,7 @@ RUN mv                                        \
   && curl -sL                                 \
     https://raw.githubusercontent.com/vrana/adminer/master/designs/pepa-linha/adminer.css \
     -o /var/www/html/public/adminer.css       \
-  && chown www-data:www-data                  \
+  && chown -R www-data:www-data               \
     /var/www/html/public/                     \
     /var/www/logs/php/                        \
     /var/www/configs/php/
