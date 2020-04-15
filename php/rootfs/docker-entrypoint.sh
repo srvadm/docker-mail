@@ -47,7 +47,7 @@ while(!\$connected) {
 }
 EOF
 
-if ! [ -f '/var/www/configs/php/init.sql' ]; then
+if [ -f '/var/www/configs/php/init.sql' ]; then
 cat << EOF | php --
 <?php
 \$filename = '/var/www/configs/php/init.sql';
@@ -124,13 +124,12 @@ if ! [ -f '/var/www/html/public/plugins/password/config.inc.php' ]; then
 \$rcmail_config['password_dovecotpw_method'] = 'BLF-CRYPT';
 \$rcmail_config['password_dovecotpw_with_method'] = true;
 EOF
-chown www-data: /var/www/html/public/plugins/managesieve/config.inc.php
+chown www-data: /var/www/html/public/plugins/password/config.inc.php
 fi
-if ! [ -f '/var/www/html/public/plugins/password/config.inc.php' ]; then
-  cat << EOF > /var/www/html/public/plugins/password/config.inc.php
+if ! [ -f '/var/www/html/public/plugins/managesieve/config.inc.php' ]; then
+  cat << EOF > /var/www/html/public/plugins/managesieve/config.inc.php
 <?php
 \$config['managesieve_port'] = 4190;
-\$rcmail_config['password_query'] = "UPDATE virtual_users SET password = %D WHERE email = %u";
 \$config['managesieve_host'] = '%h';
 \$config['managesieve_usetls'] = true;
 EOF
