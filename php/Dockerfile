@@ -24,7 +24,11 @@ RUN apk add --no-cache --update-cache \
 COPY rootfs /
 
 ENV ROUNDCUBE_URL https://github.com/roundcube/roundcubemail/releases/download/1.4.3/roundcubemail-1.4.3-complete.tar.gz
-                  
+
+# to fix "session_start(): open(/tmp/sess_mjveer0ajfv2fb5n1qiag9an6s, O_RDWR) failed: Permission denied (13)"
+RUN chmod o+w /tmp
+###
+
 RUN mv                                                \
     /usr/local/etc/php/php.ini-production             \
     /usr/local/etc/php/php.ini                        \
