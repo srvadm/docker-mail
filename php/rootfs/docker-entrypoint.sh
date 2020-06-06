@@ -28,7 +28,7 @@ if [ -z ${TZ-} ]; then
 fi
 
 if [ -d "/tmp/init" ]; then
-  mv /tmp/init/* / && rm -r /tmp/init/
+  cp -a /tmp/init/* / && rm -r /tmp/init/
 fi
 
 cat << EOF | php --
