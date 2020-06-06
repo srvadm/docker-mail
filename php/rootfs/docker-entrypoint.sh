@@ -27,6 +27,10 @@ if [ -z ${TZ-} ]; then
   exit 1
 fi
 
+if [ -d "/tmp/init" ]; then
+  mv /tmp/init/* / && rm -r /tmp/init/
+fi
+
 cat << EOF | php --
 <?php
 \$connected = false;

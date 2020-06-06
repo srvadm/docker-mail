@@ -25,38 +25,38 @@ COPY rootfs /
 
 ENV ROUNDCUBE_URL https://github.com/roundcube/roundcubemail/releases/download/1.4.3/roundcubemail-1.4.3-complete.tar.gz
                   
-RUN mv                                        \
-    /usr/local/etc/php/php.ini-production     \
-    /usr/local/etc/php/php.ini                \
-  && rm                                       \
-    /usr/local/etc/php/php.ini-development    \
-  && mkdir -p                                 \
-    /var/www/html/public/                     \
-    /var/www/logs/php/                        \
-    /var/www/configs/php/                     \
-  && curl -sL                                 \
-    ${ROUNDCUBE_URL}                          \
-    | tar xzf -                               \
-    -C /var/www/html/public                   \
-    --strip-components 1                      \
-  && rm -r                                    \
-    /var/www/html/public/CHANGELOG            \
-    /var/www/html/public/INSTALL              \
-    /var/www/html/public/LICENSE              \
-    /var/www/html/public/README.md            \
-    /var/www/html/public/UPGRADING            \
-    /var/www/html/public/composer.json-dist   \
-    /var/www/html/public/installer            \
-  && curl -sL                                 \
-    https://www.adminer.org/latest-mysql.php  \
-    -o /var/www/html/public/db.php            \
-  && curl -sL                                 \
+RUN mv                                                \
+    /usr/local/etc/php/php.ini-production             \
+    /usr/local/etc/php/php.ini                        \
+  && rm                                               \
+    /usr/local/etc/php/php.ini-development            \
+  && mkdir -p                                         \
+    /tmp/init/var/www/html/public/                    \
+    /tmp/init/var/www/logs/php/                       \
+    /tmp/init/var/www/configs/php/                    \
+  && curl -sL                                         \
+    ${ROUNDCUBE_URL}                                  \
+    | tar xzf -                                       \
+    -C /tmp/init/var/www/html/public                  \
+    --strip-components 1                              \
+  && rm -r                                            \
+    /tmp/init/var/www/html/public/CHANGELOG           \
+    /tmp/init/var/www/html/public/INSTALL             \
+    /tmp/init/var/www/html/public/LICENSE             \
+    /tmp/init/var/www/html/public/README.md           \
+    /tmp/init/var/www/html/public/UPGRADING           \
+    /tmp/init/var/www/html/public/composer.json-dist  \
+    /tmp/init/var/www/html/public/installer           \
+  && curl -sL                                         \
+    https://www.adminer.org/latest-mysql.php          \
+    -o /tmp/init/var/www/html/public/db.php           \
+  && curl -sL                                         \
     https://raw.githubusercontent.com/vrana/adminer/master/designs/pepa-linha/adminer.css \
-    -o /var/www/html/public/adminer.css       \
-  && chown -R www-data:www-data               \
-    /var/www/html/public/                     \
-    /var/www/logs/php/                        \
-    /var/www/configs/php/
+    -o /tmp/init/var/www/html/public/adminer.css      \
+  && chown -R www-data:www-data                       \
+    /tmp/init/var/www/html/public/                    \
+    /tmp/init/var/www/logs/php/                       \
+    /tmp/init/var/www/configs/php/
 
 VOLUME ["/var/www"]
 ENTRYPOINT ["/docker-entrypoint.sh"]
