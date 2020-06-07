@@ -27,7 +27,7 @@ if [ -z ${TZ-} ]; then
   exit 1
 fi
 
-if ! [ -d /var/www/configs/php/.init.done ]; then
+if ! [ -f /var/www/configs/php/.init.done ]; then
   cp -a /tmp/init/* /
 fi
 

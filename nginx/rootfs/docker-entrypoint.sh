@@ -15,7 +15,7 @@ do
   sleep 5
 done
 
-if ! [ -d /var/www/configs/nginx/.init.done ]; then
+if ! [ -f /var/www/configs/nginx/.init.done ]; then
   cp -a /tmp/init/* / && touch /var/www/configs/nginx/.init.done
 fi
 
