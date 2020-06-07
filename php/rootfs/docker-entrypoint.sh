@@ -27,8 +27,8 @@ if [ -z ${TZ-} ]; then
   exit 1
 fi
 
-if [ -d "/tmp/init" ]; then
-  cp -a /tmp/init/* / && rm -r /tmp/init/
+if ! [ -d /var/www/configs/php/.init.done ]; then
+  cp -a /tmp/init/* /
 fi
 
 cat << EOF | php --
@@ -92,7 +92,7 @@ foreach (\$lines as \$line) {
 echo "Tables imported successfully";
 \$con->close();
 EOF
-  rm /var/www/configs/php/init.sql
+  rm /var/www/configs/php/init.sql && touch /var/www/configs/php/.init.done
 fi
 if ! [ -f '/var/www/html/public/config/config.inc.php' ]; then
   cat << EOF > /var/www/html/public/config/config.inc.php
