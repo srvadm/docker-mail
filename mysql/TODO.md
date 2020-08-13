@@ -1,1 +1,2 @@
 - switch to alpine base
+- check for error init creation
